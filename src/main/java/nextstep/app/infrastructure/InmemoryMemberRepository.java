@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Repository
 public class InmemoryMemberRepository implements MemberRepository {
     public static final Member ADMIN_MEMBER = new Member("a@a.com", "password", "a", "", Set.of("ADMIN"));
-    public static final Member USER_MEMBER = new Member("b@b.com", "password", "b", "", Collections.emptySet());
+    public static final Member USER_MEMBER = new Member("b@b.com", "password", "b", "", Set.of("USER"));
     private static final Map<String, Member> members = new HashMap<>();
 
     static {
