@@ -3,6 +3,7 @@ package nextstep.security.authorization.methodSecurity;
 import nextstep.security.access.AccessDeniedException;
 import nextstep.security.authentication.Authentication;
 import nextstep.security.authentication.AuthenticationException;
+import nextstep.security.authorization.ForbiddenException;
 import nextstep.security.context.SecurityContextHolder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,7 +28,7 @@ public class SecuredAspect {
         if (authentication == null)
             throw new AuthenticationException("Authentication required");
         if (!authentication.getAuthorities().contains(permittedAuthority)) {
-            throw new AccessDeniedException("Access denied");
+            throw new ForbiddenException("Access denied");
         }
     }
 

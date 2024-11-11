@@ -87,7 +87,7 @@ class BasicAuthTest {
     @DisplayName("인증된 사용자는 자신의 정보를 조회할 수 있다.")
     @Test
     void request_success_members_me() throws Exception {
-        String token = Base64.getEncoder().encodeToString((TEST_USER_MEMBER.getEmail() + ":" + TEST_USER_MEMBER.getPassword()).getBytes());
+        String token = Base64.getEncoder().encodeToString((TEST_ADMIN_MEMBER.getEmail() + ":" + TEST_ADMIN_MEMBER.getPassword()).getBytes());
 
         ResultActions response = mockMvc.perform(get("/members/me")
                 .header("Authorization", "Basic " + token)
@@ -95,7 +95,7 @@ class BasicAuthTest {
 
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("name").value(TEST_USER_MEMBER.getName()));
+                .andExpect(jsonPath("name").value(TEST_ADMIN_MEMBER.getName()));
     }
 
     @DisplayName("인증되지 않은 사용자는 자신의 정보를 조회할 수 없다.")
