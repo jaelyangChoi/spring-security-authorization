@@ -2,6 +2,8 @@ package nextstep.app.ui;
 
 import nextstep.app.domain.Member;
 import nextstep.app.domain.MemberRepository;
+import nextstep.security.access.AccessDeniedException;
+import nextstep.security.authorization.methodSecurity.Secured;
 import nextstep.security.authentication.AuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,17 @@ public class MemberController {
         return ResponseEntity.ok(members);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Void> handleAuthenticationException() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @Secured("ADMIN")
+    @GetMapping("/search")
+    public ResponseEntity<List<Member>> search() {
+        List<Member> members = memberRepository.findAll();
+        return ResponseEntity.ok(members);
     }
+
+    //Method Security 로 발생한 예외 처리
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Void> handleAccessDeniedException() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
 }

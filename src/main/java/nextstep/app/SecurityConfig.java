@@ -6,6 +6,7 @@ import nextstep.security.authentication.AuthenticationException;
 import nextstep.security.authentication.BasicAuthenticationFilter;
 import nextstep.security.authentication.UsernamePasswordAuthenticationFilter;
 import nextstep.security.authorization.AuthorizationFilter;
+import nextstep.security.authorization.methodSecurity.SecuredAspect;
 import nextstep.security.config.DefaultSecurityFilterChain;
 import nextstep.security.config.DelegatingFilterProxy;
 import nextstep.security.config.FilterChainProxy;
@@ -15,10 +16,12 @@ import nextstep.security.userdetails.UserDetails;
 import nextstep.security.userdetails.UserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import java.util.List;
 import java.util.Set;
 
+@EnableAspectJAutoProxy
 @Configuration
 public class SecurityConfig {
 
@@ -49,6 +52,12 @@ public class SecurityConfig {
                 )
         );
     }
+
+    @Bean
+    public SecuredAspect securedAspect(){
+        return new SecuredAspect();
+    }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
