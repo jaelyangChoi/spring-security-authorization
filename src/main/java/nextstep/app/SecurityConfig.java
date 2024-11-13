@@ -2,10 +2,13 @@ package nextstep.app;
 
 import nextstep.app.domain.Member;
 import nextstep.app.domain.MemberRepository;
+import nextstep.security.access.hierarchicalroles.RoleHierarchy;
+import nextstep.security.authorization.RequestMatcherDelegatingAuthorizationManager;
 import nextstep.security.authentication.AuthenticationException;
 import nextstep.security.authentication.BasicAuthenticationFilter;
 import nextstep.security.authentication.UsernamePasswordAuthenticationFilter;
 import nextstep.security.authorization.AuthorizationFilter;
+import nextstep.security.authorization.AuthorizationManager;
 import nextstep.security.authorization.methodSecurity.SecuredAspect;
 import nextstep.security.config.DefaultSecurityFilterChain;
 import nextstep.security.config.DelegatingFilterProxy;
@@ -18,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
@@ -48,14 +52,19 @@ public class SecurityConfig {
                         new SecurityContextHolderFilter(),
                         new UsernamePasswordAuthenticationFilter(userDetailsService()),
                         new BasicAuthenticationFilter(userDetailsService()),
-                        new AuthorizationFilter()
+                        new AuthorizationFilter(authorizationManager())
                 )
         );
     }
 
     @Bean
-    public SecuredAspect securedAspect(){
-        return new SecuredAspect();
+    public AuthorizationManager<HttpServletRequest> authorizationManager() {
+        return new RequestMatcherDelegatingAuthorizationManager(roleHierarchy());
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        return new RoleHierarchy("USER < ADMIN");
     }
 
 

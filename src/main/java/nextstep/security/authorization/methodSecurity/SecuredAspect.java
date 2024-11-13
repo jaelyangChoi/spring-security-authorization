@@ -38,6 +38,5 @@ public class SecuredAspect {
         Class<?>[] parameterTypes = ((MethodSignature) joinPoint.getSignature()).getParameterTypes();
 
         return targetClass.getMethod(methodName, parameterTypes);
-
     }
 }
