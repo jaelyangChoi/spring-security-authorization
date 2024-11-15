@@ -1,6 +1,5 @@
 package nextstep.security.authorization.methodSecurity;
 
-import nextstep.security.access.AccessDeniedException;
 import nextstep.security.authentication.Authentication;
 import nextstep.security.authentication.AuthenticationException;
 import nextstep.security.authorization.ForbiddenException;

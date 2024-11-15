@@ -1,9 +1,7 @@
 package nextstep.security.authorization;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import nextstep.security.access.AccessDeniedException;
-import nextstep.security.access.hierarchicalroles.RoleHierarchy;
 import nextstep.security.authentication.Authentication;
 import nextstep.security.authentication.AuthenticationException;
 import nextstep.security.context.SecurityContextHolder;
@@ -16,11 +14,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 public class AuthorizationFilter extends GenericFilterBean {
@@ -33,7 +26,7 @@ public class AuthorizationFilter extends GenericFilterBean {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         try {
-            AuthorizationDecision decision = authorizationManager.check(this::getAuthentication, request);
+            AuthorizationDecision decision = authorizationManager.check(getAuthentication(), request);
             if (decision != null && !decision.isGranted()) {
                 throw new AccessDeniedException("Access denied");
             }
